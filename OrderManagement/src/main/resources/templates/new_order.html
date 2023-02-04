@@ -1,0 +1,25 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <p th:text="${order.submittedAt}"></p>
+    <p>The new order to buy the following services:</p>
+<!--    <p>-->
+<!--        <strong>-->
+<!--            <ul th:each="product:${productLists}">-->
+<!--                <li><th:text="${employee.name}"/></li>-->
+<!--            </ul>-->
+<!--        </strong>-->
+<!--    </p>-->
+    <p>arrived from the customer</p>
+    <p><strong th:text="${order.person.firstName}"></strong>&nbsp;<strong th:text="${order.person.lastName}"></strong>
+    </p>
+    <p>passport <strong th:text="${order.person.passportNo}"></strong>
+    </p>
+    <p>mobile <strong th:text="${order.person.mobileNo}"></strong></p>
+    <p>email <strong  th:text="${order.person.email}"></strong></p>
+    <p>located at</p>
+    <p><strong>${province}, ${city}, ${street} ${apartment}, ${postalCode}.</strong>
+    </p>
+    <p>Preferred time for operations is</p>
+    <p><strong>${prefDateFrom} - ${prefDateTo}.</strong></p>
+</body>
+</html>
