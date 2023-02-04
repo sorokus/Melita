@@ -26,17 +26,17 @@ TODO
 ### Run Middleware
 RabbitMQ and PostgreSQL are served via Docker. They are started together via Docker Compose.
 
-To start them go to application directory, i.e. `OrderManagement` and start Docker Dompose.
+To start them go to application directory, i.e. `OrderManagement` and start Docker Compose.
 (Make sure Docker Desktop was started prior.)
 ```bash
 cd ./OrderManagement
 ```
 
 ```bash
-docker-compose up
+docker-compose up -d
 ```
 
-### Tweek application config
+### Tweak application config
 The main application config is located at `/OrderManagement/src/main/resources/application.properties`
 
 It has the following properties:
@@ -64,7 +64,7 @@ Application should be built with Maven as
 `mvn clean install`
 
 And started preferably with Maven as `mvn spring-boot:run`
-or thru favourite IDE.
+or through favourite IDE.
 
 ## Application Security
 The application is designed to support two roles `USER` and `AGENT` that are authorized to call different sets of API.

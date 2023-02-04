@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * @author sorokus.dev@gmail.com
  */
 // Basic Auth is used for simplicity and demo purposes only.
-// Change to OAuth, JWT etc for production use.
+// Change to OAuth, JWT etc. for production use.
 @Configuration
 public class SecurityConfiguration {
 
@@ -31,7 +31,7 @@ public class SecurityConfiguration {
 
     @Bean
     // Simple Storage and `InMemoryUserDetailsManager` used for simplicity and demo purposes only.
-    // Change to Relational Databases, Custom data store, LDAP store etc for production use.
+    // Change to Relational Databases, Custom data store, LDAP store etc. for production use.
     public InMemoryUserDetailsManager userDetailsService() {
         // Remark: We are aware `DefaultPasswordEncoder` is unsafe. Used for simplicity and demo purposes only.
         // Change for production.

@@ -33,12 +33,6 @@ public class OrderApprovalRestController {
 
     @PostMapping(value = "/approveOrder")
     public void approveOrder(@RequestBody OrderApproveDto orderApproveDto) {
-//        try {
-//            orderService.placeOrder(orderConvertor.convertFromDtoToJSON(orderDto));
-//        }
-//        catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
 }

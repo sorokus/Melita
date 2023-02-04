@@ -14,5 +14,5 @@ public class OrderApproveDto {
     private boolean isApproved; // Could have more states, but we just have 2: approved/rejected for simplicity
     private String  resolution;
     private Date    decissionDate = new Date();
-    private String  approver; // Login of the agent making decission
+    private String  approver; // Login of the agent making decision
 }

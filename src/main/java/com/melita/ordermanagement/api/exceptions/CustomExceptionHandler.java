@@ -27,6 +27,7 @@ import java.util.List;
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
+    @Nullable
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatusCode status,
