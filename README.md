@@ -139,7 +139,8 @@ Manual testing can be done either via Swagger, Postman or Curl.
 Collection of postman scripts is located in [Melita OrderManagement.postman_collection.json](Test%2FMelita%20OrderManagement.postman_collection.json).
 
 ## Demo
-Please refer to Demo [Google drive](https://drive.google.com/file/d/1kT4iE3dnREe0J6ygNW-qO30x69nmnLB4/view?usp=sharing) if struggling with application setup/run/testing or just want to take a look at application functionality without actual local setup.
+Please refer to Demo in [Google drive](https://drive.google.com/file/d/1kT4iE3dnREe0J6ygNW-qO30x69nmnLB4/view?usp=sharing) if struggling with application setup/run/testing or just want to take a look at application functionality without actual local setup.
+
 It's recommended to watch it at x1.5-x2 speed.
 
 ## Useful links
