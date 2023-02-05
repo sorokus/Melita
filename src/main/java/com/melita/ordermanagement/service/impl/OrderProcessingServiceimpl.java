@@ -118,7 +118,6 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
             }
 
         }
-        System.out.println(orderData);
     }
 
     public void submitIntoOrderFulfillmentSystem(OrderDto orderData) throws SystemException {

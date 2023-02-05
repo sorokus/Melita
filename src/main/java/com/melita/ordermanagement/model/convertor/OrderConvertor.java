@@ -21,11 +21,10 @@ public class OrderConvertor {
         modelMapper.typeMap(OrderDto.class, Order.class);
     }
 
-    public OrderDto convertToDto(Order entity) {
+    public OrderDto convertToDto(Order entity){
         return modelMapper.map(entity, OrderDto.class);
     }
-
-    public Order convertFromDtoToEntity(OrderDto orderDto) {
+    public Order convertFromDtoToEntity(OrderDto orderDto)  {
         return modelMapper.map(orderDto, Order.class);
     }
 }
