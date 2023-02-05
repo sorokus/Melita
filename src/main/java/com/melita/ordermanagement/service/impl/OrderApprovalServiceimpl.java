@@ -42,6 +42,8 @@ public class OrderApprovalServiceimpl implements OrderApprovalService {
         } catch (PersistenceException pe) {
             throw new SystemException("Exception during order persistence", pe);
         }
+
+        // Once order (approvabke products/packages) is approved - submit into Ordering Fulfilment system restfully
         orderProcessingService.submitIntoOrderFulfillmentSystem(orderConvertor.convertToDto(order));
     }
 }

@@ -15,9 +15,11 @@ import com.melita.ordermanagement.service.OrderProcessingService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
@@ -35,6 +37,9 @@ import java.util.Set;
 public class OrderProcessingServiceimpl implements OrderProcessingService {
 
     private final static String APPROVED_BY_SYSTEM = "system";
+
+    @Value("${app.ordering-fulfilment.url}")
+    private String orderingFulfilmentUrl;
 
     @Autowired
     private ServletWebServerApplicationContext webServerAppCtx;
@@ -60,17 +65,17 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
 
     @RabbitListener(queues = "${amqp.queue.name}")
     public void pickOrder(OrderDto orderData) {
-        Order order = orderConvertor.convertFromDtoToEntity(orderData);
-
         List<Product> approvableProducts = productRepository.findDistinctByPackagesIsInAndIsApprovable(orderData.getPackageIds(),
                                                                                                        true);
         // if no products in the order require approval, so Order can be
-        // - approved by the system
+        // - auto approved by the system
         // - saved into DB
         // - submitted into Ordering Fulfilment system restfully
         // otherwise
         // - saved into DB
         // - Send the email to the Agent for Order approval
+
+        Order order = orderConvertor.convertFromDtoToEntity(orderData);
 
         if (approvableProducts.size() == 0) {
             order.setApprovedAt(new Date());
@@ -81,9 +86,8 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
             order = orderRepository.save(order);
         }
         catch (Exception exc) {
-            //TODO: On JPA error - rabbit executes infinitely - handle ex;
-            // TODO: If persistence error happens, put Order in DQL or log or whatever place for further reprocessing.
-            // Make this improvement further
+            // If persistence error happens, put Order in DLQ or log or whatever place for further reprocessing.
+            // Make this improvement further.
             exc.printStackTrace();
         }
 
@@ -109,7 +113,7 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
         else {
             // Email to the Agent on a need of new Order approval due to selected products/packages requiring approval
 
-            String link = "http://"
+            String approvalLink = "http://"
                     + InetAddress.getLoopbackAddress().getHostName()
                     + ":"
                     + webServerAppCtx.getWebServer().getPort()
@@ -122,7 +126,7 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
                                                              selProducts,
                                                              filterSelectedProductsAndPackages(approvableProducts,
                                                                                                orderData.getPackageIds()),
-                                                             link);
+                                                             approvalLink);
             }
             catch (SystemException e) {
                 e.printStackTrace();
@@ -133,14 +137,25 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
     }
 
     public void submitIntoOrderFulfillmentSystem(OrderDto orderData) throws SystemException {
+        URI uri;
         try {
-            ResponseEntity<OrderDto> result = restTemplate.postForEntity(new URI("${app.ordering-fulfilment.url}"),
-                                                                         orderData,
-                                                                         OrderDto.class);
+            uri = new URI(orderingFulfilmentUrl);
         }
         catch (URISyntaxException e) {
             throw new SystemException("Bad configuration. Wrong URL to OrderFulfillmentSystem", e);
         }
+        try {
+            // Make a further restful submission of Order into OrderFulfillmentSystem vie POST method.
+            // Since OrderFulfillmentSystem's URL/API is not defined, it can be done with a below pseudocode.
+
+//            ResponseEntity<OrderDto> result = restTemplate.postForEntity(uri,
+//                                                                         orderData,
+//                                                                         OrderDto.class);
+        }
+        catch (RestClientException rce) {
+            throw new SystemException("Error submitting data into OrderFulfillmentSystem", rce);
+        }
+
     }
 
     private List<ProductDto> fetchAndfilterSelectedProductsAndPackages(OrderDto orderData) {

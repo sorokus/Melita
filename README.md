@@ -32,7 +32,7 @@ git clone https://github.com/sorokus/melita-ordermanagement.git
 ### Run Middleware
 RabbitMQ and PostgreSQL are served via Docker. They are started together via Docker Compose.
 
-To start themm go to application directory, i.e. `melita-ordermanagement`, and start Docker Compose.
+To start them go to application directory, i.e. `melita-ordermanagement`, and start Docker Compose.
 (Make sure Docker Desktop was started prior.)
 ```bash
 cd ./melita-ordermanagement
@@ -48,22 +48,24 @@ The main application config is located in https://github.com/sorokus/melita-conf
 
 It has the following properties which can be tweaked:
 
-| Property name                | Meaning                                               | Can be customised                                                                               |
-|------------------------------|-------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| app.security.client.username | Login for a user able to place orders                 | Yes                                                                                             |
-| app.security.client.password | Password of the user able to place orders             | Yes                                                                                             |
-| app.security.agent.username  | Login of an agent able to approve orders              | Yes                                                                                             |
-| app.security.agent.password  | Password of the agent able to approve orders          | Yes                                                                                             |
-| app.agent.email              | Email where agent will receive mails about new orders | Yes                                                                                             |
-| spring.datasource.url        | DB URL                                                | No, by default<br/> Yes, if docker compose file is tweaked<br/> Yes, if switched to external DB    |
-| spring.datasource.username   | DB Username                                           | No, by default<br/> Yes, if docker compose file is tweaked<br/> Yes, if switched to external DB |
-| spring.datasource.password   | DB password                                           | No, by default<br/> Yes, if docker compose file is tweaked<br/> Yes, if switched to external DB    |
-| spring.mail.*                | Set of SMTP settings                                  | Yes                                                                                             |
-| amqp.queue.name              | RabbitMQ queue name for order processing              | Yes                                                                                             |
-| amqp.routing.key             | RabbitMQ routing key to order queue                   | Yes                                                                                             |
-| amqp.exchange.name           | RabbitMQ exchange name                                | Yes                                                                                             |
-| springdoc.packagesToScan     | Packages to scan for Swagger/OpenAPI spec fulfillment | No                                                                                              |
-| springdoc.pathsToMatch       | Paths to match for Swagger/OpenAPI spec fulfillment   | No                                                                                              |
+| Property name                | Meaning                                                                                               | Can be customised                                                                               |
+|------------------------------|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| app.security.client.username | Login for a user able to place orders                                                                 | Yes                                                                                             |
+| app.security.client.password | Password of the user able to place orders                                                             | Yes                                                                                             |
+| app.security.agent.username  | Login of an agent able to approve orders                                                              | Yes                                                                                             |
+| app.security.agent.password  | Password of the agent able to approve orders                                                          | Yes                                                                                             |
+| app.agent.email              | Email where agent will receive mails about new orders                                                 | Yes                                                                                             |
+| spring.datasource.url        | DB URL                                                                                                | No, by default<br/> Yes, if docker compose file is tweaked<br/> Yes, if switched to external DB    |
+| spring.datasource.username   | DB Username                                                                                           | No, by default<br/> Yes, if docker compose file is tweaked<br/> Yes, if switched to external DB |
+| spring.datasource.password   | DB password                                                                                           | No, by default<br/> Yes, if docker compose file is tweaked<br/> Yes, if switched to external DB    |
+| spring.mail.*                | Set of SMTP settings                                                                                  | Yes                                                                                             |
+| spring.mail.password         | Email password generated by google for app. Note: it's not a regular password for user email account. | Yes                                                                                             |
+| amqp.queue.name              | RabbitMQ queue name for order processing                                                              | Yes                                                                                             |
+| amqp.routing.key             | RabbitMQ routing key to order queue                                                                   | Yes                                                                                             |
+| amqp.exchange.name           | RabbitMQ exchange name                                                                                | Yes                                                                                             |
+| springdoc.packagesToScan     | Packages to scan for Swagger/OpenAPI spec fulfillment                                                 | No                                                                                              |
+| springdoc.pathsToMatch       | Paths to match for Swagger/OpenAPI spec fulfillment                                                   | No                                                                                              |
+
 
 ### Build and Run Melita Cloud Config Server
 Checkout *Melita Cloud Config Server* from https://github.com/sorokus/melita-configserver into directory other than `melita-ordermanagement`.

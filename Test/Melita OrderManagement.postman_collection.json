@@ -1,0 +1,514 @@
+{
+	"info": {
+		"_postman_id": "86b0362a-f099-488b-a00f-a1206d6d58a2",
+		"name": "Melita OrderManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Placement API",
+			"item": [
+				{
+					"name": "Valid",
+					"item": [
+						{
+							"name": "Fetch available products with packages",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/placement/available_products_with_packages",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"placement",
+										"available_products_with_packages"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[No need to approve] Place order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"packageIds\": [\n        1,3,4\n    ],\n    \"address\": {\n        \"province\": \"Balzan\",\n        \"city\": \"Balzan\",\n        \"street\": \"Triq Il-Kbira\",\n        \"apartment\": \"1\",\n        \"postalCode\": \"BZN 1259\"\n    },\n    \"person\": {\n        \"lastName\": \"Farrugia\",\n        \"firstName\": \"Zaren\",\n        \"mobileNo\": \"+356 2152 3875\",\n        \"email\": \"z.farrugia12@mail.com\",\n        \"passportNo\": \"0981489\"\n    },\n    \"prefDateFrom\":\"2023-02-14T10:26:49.700+00:00\",\n    \"prefDateTo\":\"2023-02-15T19:26:49.700+00:00\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/placement/placeOrder",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"placement",
+										"placeOrder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Needs approval] Place order Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"packageIds\": [\n        1, 5, 8\n    ],\n    \"address\": {\n        \"province\": \"Balzan\",\n        \"city\": \"Balzan\",\n        \"street\": \"Triq Il-Kbira\",\n        \"apartment\": \"1\",\n        \"postalCode\": \"BZN 1259\"\n    },\n    \"person\": {\n        \"lastName\": \"Farrugia\",\n        \"firstName\": \"Zaren\",\n        \"mobileNo\": \"+356 2152 3875\",\n        \"email\": \"z.farrugia12@mail.com\",\n        \"passportNo\": \"0981489\"\n    },\n    \"prefDateFrom\":\"2023-02-14T10:26:49.700+00:00\",\n    \"prefDateTo\":\"2023-02-15T19:26:49.700+00:00\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/placement/placeOrder",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"placement",
+										"placeOrder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Approve Order",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": ")Hkw+PSFTcSRXP&9",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "agent_dev",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"packageIds\": [\n        1, 5, 8\n    ],\n    \"address\": {\n        \"province\": \"Balzan\",\n        \"city\": \"Balzan\",\n        \"street\": \"Triq Il-Kbira\",\n        \"apartment\": \"1\",\n        \"postalCode\": \"BZN 1259\"\n    },\n    \"person\": {\n        \"lastName\": \"Farrugia\",\n        \"firstName\": \"Zaren\",\n        \"mobileNo\": \"+356 2152 3875\",\n        \"email\": \"z.farrugia12@mail.com\",\n        \"passportNo\": \"0981489\"\n    },\n    \"prefDateFrom\":\"2023-02-14T10:26:49.700+00:00\",\n    \"prefDateTo\":\"2023-02-15T19:26:49.700+00:00\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/approval/approveOrder/{orderId}",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"approval",
+										"approveOrder",
+										"{orderId}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Invalid",
+					"item": [
+						{
+							"name": "[Validation 1] Place order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"packageIds\": [\n    ],\n    \"address\": {\n        \"province\": \"Balzan\",\n        \"city\": \"Balzan\",\n        \"street\": \"Triq Il-Kbira\",\n        \"postalCode\": \"BZN 1259\"\n    },\n    \"person\": {\n        \"lastName\": \"Farrugia\",\n        \"firstName\": \"Zaren\",\n        \"mobileNo\": \"+356 2152 3875\",\n        \"email\": \"z.farrugia12@mail.com\"\n    },\n    \"prefDateFrom\":\"2023-02-04T10:26:49.700+00:00\",\n    \"prefDateTo\":\"2023-02-05T19:26:49.700+00:00\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/placement/placeOrder",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"placement",
+										"placeOrder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Validation 2] Place order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"address\": {\n        \"province\": \"Balzan\",\n        \"city\": \"Balzan\",\n        \"street\": \"Triq Il-Kbira\",\n        \"apartment\": \"1\",\n        \"postalCode\": \"BZN 1259\"\n    },\n    \"person\": {\n        \"lastName\": \"Farrugia\",\n        \"firstName\": \"Zaren\",\n        \"mobileNo\": \"+356 2152 3875\",\n        \"email\": \"z.farrugia12mail.com\",\n        \"passportNo\": \"0981489\"\n    },\n    \"prefDateFrom\":\"2023-02-04T10:26:49.700+00:00\",\n    \"prefDateTo\":\"2023-02-05T19:26:49.700+00:00\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/placement/placeOrder",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"placement",
+										"placeOrder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Validation 3] Place order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"packageIds\": [\n        1, 3, 5\n    ],\n    \"address\": {\n        \"province\": \"Balzan\",\n        \"city\": \"Balzan\",\n        \"street\": \"Triq Il-Kbira\",\n        \"apartment\": \"1\",\n        \"postalCode\": \"BZN 1259\"\n    },\n    \"person\": {\n        \"lastName\": \"Farrugia\",\n        \"firstName\": \"Zaren\"\n        \"mobileNo\": \"+356 2152 3875\",\n        \"email\": \"z.farrugia12@mail.com\",\n        \"passportNo\": \"0981489\"\n    },\n    \"prefDateFrom\":\"2023-02-04T10:26:49.700+00:00\",\n    \"prefDateTo\":\"2023-02-05T19:26:49.700+00:00\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/placement/placeOrder",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"placement",
+										"placeOrder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Validation 4] Place order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"province\": \"Balzan\",\n        \"city\": \"Balzan\",\n        \"street\": \"Triq Il-Kbira\",\n        \"apartment\": \"1\",\n        \"postalCode\": \"BZN 1259\"\n \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/placement/placeOrder",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"placement",
+										"placeOrder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Auth error] Place order",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "1e81b1eb3-380a-407b-9bba-0f57d79bcabf",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"packageIds\": [\n        1, 3, 5\n    ],\n    \"address\": {\n        \"province\": \"Balzan\",\n        \"city\": \"Balzan\",\n        \"street\": \"Triq Il-Kbira\",\n        \"apartment\": \"1\",\n        \"postalCode\": \"BZN 1259\"\n    },\n    \"person\": {\n        \"lastName\": \"Farrugia\",\n        \"firstName\": \"Zaren\"\n        \"mobileNo\": \"+356 2152 3875\",\n        \"email\": \"z.farrugia12@mail.com\",\n        \"passportNo\": \"0981489\"\n    },\n    \"prefDateFrom\":\"2023-02-04T10:26:49.700+00:00\",\n    \"prefDateTo\":\"2023-02-05T19:26:49.700+00:00\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/placement/placeOrder",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"placement",
+										"placeOrder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Auth error] Fetch available products with packages",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "1e81b1eb3-380a-407b-9bba-0f57d79bcabf",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/placement/available_products_with_packages",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"placement",
+										"available_products_with_packages"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[Auth error] Approve Order",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"packageIds\": [\n        1, 5, 8\n    ],\n    \"address\": {\n        \"province\": \"Balzan\",\n        \"city\": \"Balzan\",\n        \"street\": \"Triq Il-Kbira\",\n        \"apartment\": \"1\",\n        \"postalCode\": \"BZN 1259\"\n    },\n    \"person\": {\n        \"lastName\": \"Farrugia\",\n        \"firstName\": \"Zaren\",\n        \"mobileNo\": \"+356 2152 3875\",\n        \"email\": \"z.farrugia12@mail.com\",\n        \"passportNo\": \"0981489\"\n    },\n    \"prefDateFrom\":\"2023-02-14T10:26:49.700+00:00\",\n    \"prefDateTo\":\"2023-02-15T19:26:49.700+00:00\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/approval/approveOrder/{orderId}",
+									"host": [
+										"{{HOST_NAME}}"
+									],
+									"port": "{{HOST_PORT}}",
+									"path": [
+										"api",
+										"v1",
+										"ordermanagement",
+										"approval",
+										"approveOrder",
+										"{orderId}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Approval API",
+			"item": [
+				{
+					"name": "Approve order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderId\": 1,\n    \"isApproved\": true,\n    \"resolution\":\"Fullfills all requirements\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/approval/approveOrder",
+							"host": [
+								"{{HOST_NAME}}"
+							],
+							"port": "{{HOST_PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"ordermanagement",
+								"approval",
+								"approveOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderId\": 2,\n    \"isApproved\": false,\n    \"resolution\": \"The client is in company's blacklist\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_NAME}}:{{HOST_PORT}}/api/v1/ordermanagement/approval/approveOrder",
+							"host": [
+								"{{HOST_NAME}}"
+							],
+							"port": "{{HOST_PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"ordermanagement",
+								"approval",
+								"approveOrder"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "user_dev",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "@t+cU9ZKKUZLdMm4",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST_NAME",
+			"value": "localhost",
+			"type": "default"
+		},
+		{
+			"key": "HOST_PORT",
+			"value": "8080",
+			"type": "default"
+		}
+	]
+}
