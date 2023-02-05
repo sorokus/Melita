@@ -6,6 +6,8 @@ import com.melita.ordermanagement.model.entity.Product;
 import com.melita.ordermanagement.repository.ProductRepository;
 import com.melita.ordermanagement.service.OrderPlacementService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import java.util.List;
 @Service
 public class OrderPlacementServiceimpl implements OrderPlacementService {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(OrderPlacementServiceimpl.class);
+
     private ProductRepository productRepository;
     private RabbitTemplate rabbitTemplate;
 
@@ -32,11 +36,13 @@ public class OrderPlacementServiceimpl implements OrderPlacementService {
 
     @Override
     public List<Product> getAvailableProductsWithPackages() {
+        LOGGER.debug("Getting available products with packages from DB");
         return productRepository.findAllByOrderByIdAsc();
     }
 
     @Override
     public void placeOrder(OrderDto orderData) throws SystemException {
+        LOGGER.debug("A new Order being placed in the Queue");
         try {
             rabbitTemplate.convertAndSend(exchangeName, routingKey, orderData);
         } catch (AmqpException amqpe) {

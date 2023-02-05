@@ -3,6 +3,8 @@ package com.melita.ordermanagement.api.exceptions;
 import com.melita.ordermanagement.base.exceptions.BusinessException;
 import com.melita.ordermanagement.base.exceptions.SystemException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
+ * This class customizes handling of standard and custom (BusinessException.class, SystemException.class) exceptions,
+ * propagated to a level of Controller.
+ * It wraps exceptions in a unified structured JSON for further propagation to the client.
+ *
  * @author sorokus.dev@gmail.com
  */
 
@@ -30,11 +36,14 @@ import java.util.List;
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+
     @ExceptionHandler({BusinessException.class})
     public ResponseEntity<Object> handleBusinessException(BusinessException ex) {
         String error = "Business Logic Exception";
         List<ApiSubError> subErrors = new ArrayList<>();
         subErrors.add(new BusinessError(ex.getMessage()));
+        LOGGER.error("[" + error + "] " + ex.getMessage(), ex);
         return buildResponseEntity(new ApiError(HttpStatus.CONFLICT, error, null, subErrors));
     }
 
@@ -43,6 +52,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         String error = "System Exception";
         List<ApiSubError> subErrors = new ArrayList<>();
         subErrors.add(new SystemError(ex.getMessage(), ex.getCause()));
+        LOGGER.error("[" + error + "] " + ex.getMessage(), ex);
         return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, null, subErrors));
     }
 
@@ -53,6 +63,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
         String error = "Malformed JSON request";
+        LOGGER.debug("[" + error + "] " + ex.getMessage(), ex);
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
     }
 
@@ -76,6 +87,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             }
         }
         if (sb.length() > 0) {sb.setLength(sb.length() - 1);}
+        LOGGER.debug("[" + error + "] " + ex.getMessage(), ex);
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, sb.toString(), subErrors));
     }
 

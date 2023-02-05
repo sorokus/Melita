@@ -8,6 +8,8 @@ import com.melita.ordermanagement.repository.OrderRepository;
 import com.melita.ordermanagement.service.OrderApprovalService;
 import com.melita.ordermanagement.service.OrderProcessingService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +24,29 @@ import jakarta.persistence.PersistenceException;
 @Service
 public class OrderApprovalServiceimpl implements OrderApprovalService {
 
-    private OrderConvertor orderConvertor;
+    private final static Logger LOGGER = LoggerFactory.getLogger(OrderApprovalServiceimpl.class);
+
+    private OrderConvertor         orderConvertor;
     private OrderProcessingService orderProcessingService;
-    private OrderRepository orderRepository;
+    private OrderRepository        orderRepository;
 
     @Override
     public void approveOrder(Long orderId, String approverName) throws BusinessException, SystemException {
+        LOGGER.debug("Approving the Order #" + orderId + " by " + approverName);
+
         Order order = orderRepository.findByIdAndApprovedByIsNull(orderId)
                                      .orElseThrow(() -> new BusinessException("Order with id=" + orderId + " not found or doesn't require approval"));
         order.setApprovedAt(new Date());
         order.setApprovedBy(approverName);
         try {
             orderRepository.save(order);
-        } catch (PersistenceException pe) {
+        }
+        catch (PersistenceException pe) {
             throw new SystemException("Exception during order persistence", pe);
         }
 
-        // Once order (approvabke products/packages) is approved - submit into Ordering Fulfilment system restfully
+        // Once order (approvable products/packages) is approved - submit into Ordering Fulfilment system restfully
+        LOGGER.debug("Submitting approved Order #" + orderId + " into OrderFulfillment System");
         orderProcessingService.submitIntoOrderFulfillmentSystem(orderConvertor.convertToDto(order));
     }
 

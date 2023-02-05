@@ -5,6 +5,8 @@ import com.melita.ordermanagement.model.dto.OrderDto;
 import com.melita.ordermanagement.model.dto.ProductDto;
 import com.melita.ordermanagement.service.EmailService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,6 +25,8 @@ import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl implements EmailService {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
 
     @Value("${app.agent.email}")
     private String agentEmail;

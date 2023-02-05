@@ -12,6 +12,8 @@ import com.melita.ordermanagement.repository.ProductRepository;
 import com.melita.ordermanagement.service.EmailService;
 import com.melita.ordermanagement.service.OrderProcessingService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,21 +37,25 @@ import java.util.Set;
 @Service
 public class OrderProcessingServiceimpl implements OrderProcessingService {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(OrderProcessingServiceimpl.class);
+
     private final static String APPROVED_BY_SYSTEM = "system";
 
     @Value("${app.ordering-fulfilment.url}")
     private String orderingFulfilmentUrl;
 
-    private EmailService emailService;
-    private OrderConvertor orderConvertor;
-    private OrderRepository orderRepository;
-    private ProductConvertor productConvertor;
-    private ProductRepository productRepository;
-    private RestTemplate restTemplate;
+    private EmailService                       emailService;
+    private OrderConvertor                     orderConvertor;
+    private OrderRepository                    orderRepository;
+    private ProductConvertor                   productConvertor;
+    private ProductRepository                  productRepository;
+    private RestTemplate                       restTemplate;
     private ServletWebServerApplicationContext webServerAppCtx;
 
     @RabbitListener(queues = "${amqp.queue.name}")
     public void pickOrder(OrderDto orderData) {
+        LOGGER.debug("A new Order picked up from the Queue.");
+
         List<Product> approvableProducts = productRepository.findDistinctByPackagesIsInAndIsApprovable(orderData.getPackageIds(),
                                                                                                        true);
         // if no products in the order require approval, so Order can be
@@ -67,22 +73,27 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
             order.setApprovedBy(APPROVED_BY_SYSTEM);
         }
 
+        LOGGER.debug("A new Order being persisted in DB.");
+
         try {
             order = orderRepository.save(order);
         }
         catch (Exception exc) {
             // If persistence error happens, put Order in DLQ or log or whatever place for further reprocessing.
             // Make this improvement further.
-            exc.printStackTrace();
+            LOGGER.error("Error persisting the Order ", exc);
+            return;
         }
 
         // Email to the Agent on new Order placement
         List<ProductDto> selProducts = fetchAndFilterSelectedProductsAndPackages(orderData);
+        LOGGER.debug("A notification email on the new Order #" + order.getId() + " being sent");
         try {
             emailService.sendNewOrderHtmlMail(order.getId(), orderData, selProducts);
         }
-        catch (SystemException e) {
-            e.printStackTrace();
+        catch (SystemException se) {
+            LOGGER.error("Error sending notification email on the new Order #" + order.getId(), se);
+            return;
         }
 
         if (approvableProducts.size() == 0) {
@@ -91,8 +102,8 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
                 submitIntoOrderFulfillmentSystem(orderData);
             }
             catch (SystemException se) {
-                // TODO:
-                se.printStackTrace();
+                LOGGER.error("Error submitting the Order into OrderFulfillment System", se);
+                return;
             }
         }
         else {
@@ -105,7 +116,7 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
                     + "/api/v1/ordermanagement/approval/approveOrder/" +
                     order.getId();
             try {
-
+                LOGGER.debug("An email to Agent for approval of Order #" + order.getId() + " being sent");
                 emailService.sendNewOrderForApprovalHtmlMail(order.getId(),
                                                              orderData,
                                                              selProducts,
@@ -113,33 +124,35 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
                                                                                                orderData.getPackageIds()),
                                                              approvalLink);
             }
-            catch (SystemException e) {
-                e.printStackTrace();
+            catch (SystemException se) {
+                LOGGER.error("Error sending an email to Agent for approval of Order #" + order.getId(), se);
+                return;
             }
-
         }
+        LOGGER.debug("The new Order #" + order.getId() + " is fully processed");
     }
 
     public void submitIntoOrderFulfillmentSystem(OrderDto orderData) throws SystemException {
+        LOGGER.debug("Submission to OrderFulfillment System is initiated");
         URI uri;
         try {
             uri = new URI(orderingFulfilmentUrl);
         }
         catch (URISyntaxException e) {
-            throw new SystemException("Bad configuration. Wrong URL to OrderFulfillmentSystem", e);
+            throw new SystemException("Bad configuration. Wrong URL to OrderFulfillment System", e);
         }
         try {
             // Make a further restful submission of Order into OrderFulfillmentSystem vie POST method.
             // Since OrderFulfillmentSystem's URL/API is not defined, it can be done with a below pseudocode.
 
-//            ResponseEntity<OrderDto> result = restTemplate.postForEntity(uri,
-//                                                                         orderData,
-//                                                                         OrderDto.class);
+            //            ResponseEntity<OrderDto> result = restTemplate.postForEntity(uri,
+            //                                                                         orderData,
+            //                                                                         OrderDto.class);
         }
         catch (RestClientException rce) {
             throw new SystemException("Error submitting data into OrderFulfillmentSystem", rce);
         }
-
+        LOGGER.debug("Submission to OrderFulfillment System is completed");
     }
 
     @Autowired
