@@ -24,6 +24,20 @@
         </p>
         <p>Preferred time for operations is</p>
         <p><span style="font-weight: bold; color: #f78da7;" th:text="${order.prefDateFrom}"/> - <span style="font-weight: bold; color: #f78da7;" th:text="${order.prefDateTo}"/></p>
+
+        <br/><br/>
+        <p><span style="font-weight: bold; font-size: xx-large; color: red;">These products require approval:</span></p>
+        <p>
+            <strong>
+            <ul th:each="apProduct: ${approvalProducts}">
+                    <span style="font-weight: bold; color: #f78da7;" th:each="apPackage: ${apProduct.packages}">
+                        <li><span th:text="${apProduct.name}"/> - <span th:text="${apPackage.name}"/></li>
+                    </span>
+            </ul>
+            </strong>
+            Please approve them <a th:href="${approvalLink}">here</a>
+        </p>
+
     </div>
 </body>
 </html>

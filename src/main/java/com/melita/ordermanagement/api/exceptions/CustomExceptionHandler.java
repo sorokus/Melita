@@ -1,8 +1,7 @@
 package com.melita.ordermanagement.api.exceptions;
 
-/*
- * @author sorokus.dev@gmail.com
- */
+import com.melita.ordermanagement.base.exceptions.BusinessException;
+import com.melita.ordermanagement.base.exceptions.SystemException;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -16,15 +15,36 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * @author sorokus.dev@gmail.com
+ */
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler({BusinessException.class})
+    public ResponseEntity<Object> handleBusinessException(BusinessException ex) {
+        String error = "Business Logic Exception";
+        List<ApiSubError> subErrors = new ArrayList<>();
+        subErrors.add(new BusinessError(ex.getMessage()));
+        return buildResponseEntity(new ApiError(HttpStatus.CONFLICT, error, null, subErrors));
+    }
+
+    @ExceptionHandler({SystemException.class})
+    public ResponseEntity<Object> handleBusinessException(SystemException ex) {
+        String error = "System Exception";
+        List<ApiSubError> subErrors = new ArrayList<>();
+        subErrors.add(new SystemError(ex.getMessage(), ex.getCause()));
+        return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, null, subErrors));
+    }
 
     @Override
     @Nullable

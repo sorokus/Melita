@@ -4,14 +4,11 @@ package com.melita.ordermanagement.service;
  * @author sorokus.dev@gmail.com
  */
 
-import com.melita.ordermanagement.model.dto.OrderDto;
-import com.melita.ordermanagement.model.entity.Product;
-
-import java.util.List;
+import com.melita.ordermanagement.base.exceptions.BusinessException;
+import com.melita.ordermanagement.base.exceptions.SystemException;
 
 public interface OrderApprovalService {
 
-    List<Product> getAvailableProductsWithPackages();
+    void approveOrder(Long orderId, String approverName) throws BusinessException, SystemException;
 
-    void placeOrder(OrderDto orderData);
 }

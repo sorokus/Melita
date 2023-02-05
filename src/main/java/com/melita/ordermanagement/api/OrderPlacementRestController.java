@@ -1,5 +1,6 @@
 package com.melita.ordermanagement.api;
 
+import com.melita.ordermanagement.base.exceptions.SystemException;
 import com.melita.ordermanagement.model.convertor.ProductConvertor;
 import com.melita.ordermanagement.model.dto.OrderDto;
 import com.melita.ordermanagement.model.dto.ProductDto;
@@ -41,7 +42,7 @@ public class OrderPlacementRestController {
     }
 
     @PostMapping(value = "/placeOrder")
-    public void placeOrder(@Valid @RequestBody OrderDto orderDto) {
+    public void placeOrder(@Valid @RequestBody OrderDto orderDto) throws SystemException {
         orderPlacementService.placeOrder(orderDto);
     }
 

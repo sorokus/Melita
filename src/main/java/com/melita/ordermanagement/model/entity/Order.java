@@ -28,19 +28,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="\"order\"")
+@Table(name = "\"order\"")
 public class Order {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "order_package",
-//            joinColumns = @JoinColumn(name = "order_id"),
-//            inverseJoinColumns = @JoinColumn(name = "package_id"))
-//    private Set<Package> packages;
+    //    @ManyToMany
+    //    @JoinTable(
+    //            name = "order_package",
+    //            joinColumns = @JoinColumn(name = "order_id"),
+    //            inverseJoinColumns = @JoinColumn(name = "package_id"))
+    //    private Set<Package> packages;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
@@ -48,8 +48,7 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL)
     private Person person;
 
-    private Date prefDateFrom;
-
+    private Date   prefDateFrom;
     private Date   prefDateTo;
     private Date   submittedAt = new Date();
     private Date   approvedAt;

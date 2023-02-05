@@ -14,5 +14,6 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> findAllByOrderByIdAsc();
+    List<Product> findDistinctByPackagesIsIn(Iterable<Long> packageIds);
     List<Product> findDistinctByPackagesIsInAndIsApprovable(Iterable<Long> packageIds, Boolean isApprovable);
 }
