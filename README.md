@@ -7,10 +7,29 @@
 | Ruslan Sorokin | System Architect, Key Developer | [sorokus.dev@gmail.com](mailto:sorokus.dev@gmail.com)     |
 
 ## Application information
-TODO
+The solution is represented as two applications:  *Melita Cloud Config Server* and *Melita OrderManagement application*.
 
-### SLA
-TODO
+They run separately on two application servers.
+
+*Melita OrderManagement application* interacts with  *Melita Cloud Config Server*, *RabbitMQ* middleware, and *PostgresSQL* DB.
+
+### Frameworks and Libraries utilized
+
+| Name                | Purpose / Role                                          | Notes                                                  |
+|---------------------|---------------------------------------------------------|--------------------------------------------------------|
+| Spring Boot         | Core functionality of the app                           |                                                        |
+| Spring Security     | Authentication / authorization                          | Separate 'user' and 'agent' roles and users            |
+| Spring Data JPA     | Persistence layer                                       | Default Hibernate implementation is used               |
+| Flyway              | Versioned maintenance of DB schema changes              |               |
+| Spring Cloud Config | Separate maintenance of config data on dedicated server |                                                        |
+| Spring Mail         | Email management                                        |                                                        |
+| Themeleaf           | Render HTML content for emails based on templates       |                                                        |
+| Jakarta Validation  | Implement field validation for REST API                 |                                                        |
+| Lombok              | Dynamic code generation utility                         | Lets minimize code and get rid of setters/getters/etc. |
+| ModelMapper         | Simplifies mapping between objects                      | Effectively convert VO<->Entity                        |
+| Spring AMQP         | Interactions with RabbitMQ via AM                       |                                                        |
+| Springdoc           | Generation of OpenAPI specs, Swagger support            | http://localhost:8080/swagger-ui/index.html                                                   |
+| postgresql          | Connectivity with PostgreSQL                            |                                                        |
 
 ## Application setup and run
 
@@ -100,6 +119,7 @@ or through favourite IDE.
 The application is designed to support two roles `USER` and `AGENT` that are authorized to call different sets of API.
 
 The application has two pre-configured users: `user` and `agent` (see `ordermanagement.properties` storing username/password for each).
+(Or `user_dev` and `agent_dev` (see `ordermanagement-dev.properties`) respectively.)
 
 ## Application API (Swagger)
 
@@ -116,14 +136,22 @@ It can be run explicitly with Maven as
 ### Manual or Interactive Testing
 Manual testing can be done either via Swagger, Postman or Curl.
 
-Collection of postman scripts is located in ...
+Collection of postman scripts is located in [Melita OrderManagement.postman_collection.json](Test%2FMelita%20OrderManagement.postman_collection.json).
 
 ## Demo
 Please refer to Demo (link!) if struggling with application setup/run/testing.
 
-## Troubleshooting
-TODO
-### Logs
-TODO
+## Useful links
+### Application repos
+- https://github.com/sorokus/melita-config-repo
+- https://github.com/sorokus/melita-configserver
+- https://github.com/sorokus/melita-ordermanagement
+### Required software
+- https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+- https://www.docker.com/products/docker-desktop/
+- https://docs.docker.com/compose/install/
+- https://maven.apache.org/download.cgi
+
+
 ## More Information
-TODO
+More information can be provided by contacting the author @ [sorokus.dev@gmail.com](mailto:sorokus.dev@gmail.com)
