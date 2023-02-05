@@ -21,7 +21,7 @@ public class ProductConvertor {
         modelMapper.typeMap(Package.class, PackageDto.class);
     }
 
-    public ProductDto convertToDto(Product entity){
+    public ProductDto convertToDto(Product entity) {
         return modelMapper.map(entity, ProductDto.class);
     }
 }

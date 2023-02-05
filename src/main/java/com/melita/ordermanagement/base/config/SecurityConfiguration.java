@@ -17,17 +17,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
-    @Value("${app.security.client.username}")
-    private String clientUsername;
-
-    @Value("${app.security.client.password}")
-    private String clientPassword;
-
     @Value("${app.security.agent.username}")
     private String agentUsername;
 
     @Value("${app.security.agent.password}")
     private String agentPassword;
+
+    @Value("${app.security.client.username}")
+    private String clientUsername;
+
+    @Value("${app.security.client.password}")
+    private String clientPassword;
 
     @Bean
     // Simple Storage and `InMemoryUserDetailsManager` used for simplicity and demo purposes only.
@@ -55,9 +55,14 @@ public class SecurityConfiguration {
         return http.csrf()
                    .disable()
                    .authorizeHttpRequests()
-                   .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**", "/configuration/ui","/configuration/security")
-                    .permitAll()
-//                   .and().cors()
+                   .requestMatchers("/v3/api-docs/**",
+                                    "/swagger-ui/**",
+                                    "/swagger-ui.html",
+                                    "/swagger-resources/**",
+                                    "/configuration/ui",
+                                    "/configuration/security")
+                   .permitAll()
+                   //                   .and().cors()
                    .and()
                    .authorizeHttpRequests()
                    .requestMatchers("/api/v1/ordermanagement/placement/**")

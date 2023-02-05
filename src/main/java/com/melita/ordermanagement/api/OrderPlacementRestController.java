@@ -27,11 +27,8 @@ import jakarta.validation.Valid;
 @SecurityRequirement(name = "swagger")
 public class OrderPlacementRestController {
 
-    @Autowired
     private OrderPlacementService orderPlacementService;
-
-    @Autowired
-    private ProductConvertor productConvertor;
+    private ProductConvertor      productConvertor;
 
     @GetMapping(value = {"/available_products_with_packages"})
     public List<ProductDto> getAvailableProductsWithPackages() {
@@ -44,6 +41,16 @@ public class OrderPlacementRestController {
     @PostMapping(value = "/placeOrder")
     public void placeOrder(@Valid @RequestBody OrderDto orderDto) throws SystemException {
         orderPlacementService.placeOrder(orderDto);
+    }
+
+    @Autowired
+    public void setOrderPlacementService(OrderPlacementService orderPlacementService) {
+        this.orderPlacementService = orderPlacementService;
+    }
+
+    @Autowired
+    public void setProductConvertor(ProductConvertor productConvertor) {
+        this.productConvertor = productConvertor;
     }
 
 }

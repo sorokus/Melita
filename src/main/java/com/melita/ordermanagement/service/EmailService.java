@@ -12,14 +12,14 @@ import java.util.Collection;
 
 public interface EmailService {
 
-    void sendNewOrderHtmlMail(Long orderId,
-                              OrderDto orderDto,
-                              Collection<ProductDto> selectedProducts) throws SystemException;
-
     void sendNewOrderForApprovalHtmlMail(Long orderId,
                                          OrderDto orderDto,
                                          Collection<ProductDto> selectedProducts,
                                          Collection<ProductDto> approvalProducts,
                                          String linkForApproval) throws SystemException;
+
+    void sendNewOrderHtmlMail(Long orderId,
+                              OrderDto orderDto,
+                              Collection<ProductDto> selectedProducts) throws SystemException;
 
 }

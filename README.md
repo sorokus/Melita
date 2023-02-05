@@ -27,7 +27,7 @@ They run separately on two application servers.
 | Jakarta Validation  | Implement field validation for REST API                 |                                                        |
 | Lombok              | Dynamic code generation utility                         | Lets minimize code and get rid of setters/getters/etc. |
 | ModelMapper         | Simplifies mapping between objects                      | Effectively convert VO<->Entity                        |
-| Spring AMQP         | Interactions with RabbitMQ via AM                       |                                                        |
+| Spring AMQP         | Interactions with RabbitMQ via AMQP                     |                                                        |
 | Springdoc           | Generation of OpenAPI specs, Swagger support            | http://localhost:8080/swagger-ui/index.html                                                   |
 | postgresql          | Connectivity with PostgreSQL                            |                                                        |
 

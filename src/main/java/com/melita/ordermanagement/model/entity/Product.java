@@ -27,13 +27,14 @@ public class Product {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long   id;
-    private String name;
-    private String description;
+    private Long    id;
+    private String  name;
+    private String  description;
     private Boolean isApprovable;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id",
+                referencedColumnName = "id")
     private Set<Package> packages;
 
     @Override

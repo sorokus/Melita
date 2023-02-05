@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -41,27 +40,13 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
     @Value("${app.ordering-fulfilment.url}")
     private String orderingFulfilmentUrl;
 
-    @Autowired
-    private ServletWebServerApplicationContext webServerAppCtx;
-
-    @Autowired
     private EmailService emailService;
-
-    @Autowired
     private OrderConvertor orderConvertor;
-
-    @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
     private ProductConvertor productConvertor;
-
-    @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    @Qualifier("ofRestTemplate")
     private RestTemplate restTemplate;
+    private ServletWebServerApplicationContext webServerAppCtx;
 
     @RabbitListener(queues = "${amqp.queue.name}")
     public void pickOrder(OrderDto orderData) {
@@ -92,7 +77,7 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
         }
 
         // Email to the Agent on new Order placement
-        List<ProductDto> selProducts = fetchAndfilterSelectedProductsAndPackages(orderData);
+        List<ProductDto> selProducts = fetchAndFilterSelectedProductsAndPackages(orderData);
         try {
             emailService.sendNewOrderHtmlMail(order.getId(), orderData, selProducts);
         }
@@ -158,7 +143,43 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
 
     }
 
-    private List<ProductDto> fetchAndfilterSelectedProductsAndPackages(OrderDto orderData) {
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    @Autowired
+    public void setOrderConvertor(OrderConvertor orderConvertor) {
+        this.orderConvertor = orderConvertor;
+    }
+
+    @Autowired
+    public void setOrderRepository(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    @Autowired
+    public void setProductConvertor(ProductConvertor productConvertor) {
+        this.productConvertor = productConvertor;
+    }
+
+    @Autowired
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    @Autowired
+    @Qualifier("ofRestTemplate")
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    @Autowired
+    public void setWebServerAppCtx(ServletWebServerApplicationContext webServerAppCtx) {
+        this.webServerAppCtx = webServerAppCtx;
+    }
+
+    private List<ProductDto> fetchAndFilterSelectedProductsAndPackages(OrderDto orderData) {
         final Set<Long> packageIds = orderData.getPackageIds();
         List<Product> selectedProducts = productRepository.findDistinctByPackagesIsIn(packageIds);
         return filterSelectedProductsAndPackages(selectedProducts, packageIds);
@@ -172,4 +193,5 @@ public class OrderProcessingServiceimpl implements OrderProcessingService {
                                                 .toList()));
         return productDtos;
     }
+
 }

@@ -21,10 +21,7 @@ import java.util.List;
 @Service
 public class OrderPlacementServiceimpl implements OrderPlacementService {
 
-    @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
     private RabbitTemplate rabbitTemplate;
 
     @Value("${amqp.exchange.name}")
@@ -46,4 +43,15 @@ public class OrderPlacementServiceimpl implements OrderPlacementService {
             throw new SystemException("AMPQ error while sending to queue", amqpe);
         }
     }
+
+    @Autowired
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    @Autowired
+    public void setRabbitTemplate(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
 }

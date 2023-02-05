@@ -27,27 +27,11 @@ public class EmailServiceImpl implements EmailService {
     @Value("${app.agent.email}")
     private String agentEmail;
 
-    @Autowired
-    private JavaMailSender javaMailSender;
-
-    @Autowired
-    private SpringTemplateEngine templateEngine;
-
     @Value("${spring.mail.username}")
     private String sender;
 
-    @Override
-    public void sendNewOrderHtmlMail(Long orderId,
-                                     OrderDto orderDto,
-                                     Collection<ProductDto> selectedProducts) throws SystemException {
-        final Context ctx = new Context();
-        ctx.setVariable("orderId", orderId);
-        ctx.setVariable("order", orderDto);
-        ctx.setVariable("products", selectedProducts);
-
-        final String htmlContent = this.templateEngine.process("new_order.html", ctx);
-        baseSendNewOrderHtmlMail(ctx, "new_order.html", "[Info] New Order #" + orderId + " arrived from the client");
-    }
+    private JavaMailSender       javaMailSender;
+    private SpringTemplateEngine templateEngine;
 
     @Override
     public void sendNewOrderForApprovalHtmlMail(Long orderId,
@@ -65,6 +49,28 @@ public class EmailServiceImpl implements EmailService {
         baseSendNewOrderHtmlMail(ctx,
                                  "new_order_requires_approval.html",
                                  "[Approval] New Order #" + orderId + " arrived from the client and requires approval");
+    }
+
+    @Override
+    public void sendNewOrderHtmlMail(Long orderId,
+                                     OrderDto orderDto,
+                                     Collection<ProductDto> selectedProducts) throws SystemException {
+        final Context ctx = new Context();
+        ctx.setVariable("orderId", orderId);
+        ctx.setVariable("order", orderDto);
+        ctx.setVariable("products", selectedProducts);
+
+        baseSendNewOrderHtmlMail(ctx, "new_order.html", "[Info] New Order #" + orderId + " arrived from the client");
+    }
+
+    @Autowired
+    public void setJavaMailSender(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
+
+    @Autowired
+    public void setTemplateEngine(SpringTemplateEngine templateEngine) {
+        this.templateEngine = templateEngine;
     }
 
     private void baseSendNewOrderHtmlMail(Context ctx, String templateName, String subject) throws SystemException {

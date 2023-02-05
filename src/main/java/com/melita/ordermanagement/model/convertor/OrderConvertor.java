@@ -19,13 +19,13 @@ public class OrderConvertor {
         this.modelMapper = new ModelMapper();
         modelMapper.typeMap(Order.class, OrderDto.class);
         modelMapper.typeMap(OrderDto.class, Order.class);
-//        modelMapper.typeMap(Package.class, PackageDto.class);
     }
 
-    public OrderDto convertToDto(Order entity){
+    public OrderDto convertToDto(Order entity) {
         return modelMapper.map(entity, OrderDto.class);
     }
-    public Order convertFromDtoToEntity(OrderDto orderDto)  {
+
+    public Order convertFromDtoToEntity(OrderDto orderDto) {
         return modelMapper.map(orderDto, Order.class);
     }
 }

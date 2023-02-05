@@ -4,13 +4,11 @@
         <p style="font-size: x-small;color: #f78da7;" th:text="${order.submittedAt}">submittedAt</p>
         <p>The new order # <span style="font-weight: bold; color: #f78da7;" th:text="${orderId}"/> to buy the following services:</p>
         <p>
-            <strong>
                 <ul th:each="product: ${products}">
                     <span style="font-weight: bold; color: #f78da7;" th:each="package: ${product.packages}">
                         <li><span th:text="${product.name}"/> - <span th:text="${package.name}"/></li>
                     </span>
                 </ul>
-            </strong>
         </p>
         <p>arrived from the customer</p>
         <p style="font-size: large; font-weight: bold; color: #f78da7;"><span th:text="${order.person.firstName}">firstName</span>&nbsp;<span th:text="${order.person.lastName}">lastName</span>
@@ -28,13 +26,12 @@
         <br/><br/>
         <p><span style="font-weight: bold; font-size: xx-large; color: red;">These products require approval:</span></p>
         <p>
-            <strong>
             <ul th:each="apProduct: ${approvalProducts}">
                     <span style="font-weight: bold; color: #f78da7;" th:each="apPackage: ${apProduct.packages}">
                         <li><span th:text="${apProduct.name}"/> - <span th:text="${apPackage.name}"/></li>
                     </span>
             </ul>
-            </strong>
+            <br/>
             Please approve them <a th:href="${approvalLink}">here</a>
         </p>
 

@@ -22,13 +22,8 @@ import jakarta.persistence.PersistenceException;
 @Service
 public class OrderApprovalServiceimpl implements OrderApprovalService {
 
-    @Autowired
-    private OrderProcessingService orderProcessingService;
-
-    @Autowired
     private OrderConvertor orderConvertor;
-
-    @Autowired
+    private OrderProcessingService orderProcessingService;
     private OrderRepository orderRepository;
 
     @Override
@@ -46,4 +41,20 @@ public class OrderApprovalServiceimpl implements OrderApprovalService {
         // Once order (approvabke products/packages) is approved - submit into Ordering Fulfilment system restfully
         orderProcessingService.submitIntoOrderFulfillmentSystem(orderConvertor.convertToDto(order));
     }
+
+    @Autowired
+    public void setOrderConvertor(OrderConvertor orderConvertor) {
+        this.orderConvertor = orderConvertor;
+    }
+
+    @Autowired
+    public void setOrderProcessingService(OrderProcessingService orderProcessingService) {
+        this.orderProcessingService = orderProcessingService;
+    }
+
+    @Autowired
+    public void setOrderRepository(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
 }
