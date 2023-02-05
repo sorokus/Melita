@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.melita</groupId>
-    <artifactId>OrderManagement</artifactId>
+    <artifactId>melita-ordermanagement</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>OrderManagement</name>
     <description>OrderManagement</description>

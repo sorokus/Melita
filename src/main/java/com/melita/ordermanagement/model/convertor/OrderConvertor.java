@@ -1,33 +1,31 @@
 package com.melita.ordermanagement.model.convertor;
+
+import com.melita.ordermanagement.model.dto.OrderDto;
+import com.melita.ordermanagement.model.entity.Order;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
+
 /*
  * @author sorokus.dev@gmail.com
  */
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.melita.ordermanagement.model.dto.OrderDto;
-
-//import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 @Component
 public class OrderConvertor {
 
-//    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-//    public OrderConvertor() {
-//        this.modelMapper = new ModelMapper();
-//    }
-
-    public String convertFromDtoToJSON(OrderDto orderDto) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(orderDto);
+    public OrderConvertor() {
+        this.modelMapper = new ModelMapper();
+        modelMapper.typeMap(Order.class, OrderDto.class);
+        modelMapper.typeMap(OrderDto.class, Order.class);
+//        modelMapper.typeMap(Package.class, PackageDto.class);
     }
 
-//    public Order convertFromDtoToEntity(OrderDto orderDto)  {
-//
-//    }
+    public OrderDto convertToDto(Order entity){
+        return modelMapper.map(entity, OrderDto.class);
+    }
+    public Order convertFromDtoToEntity(OrderDto orderDto)  {
+        return modelMapper.map(orderDto, Order.class);
+    }
 }

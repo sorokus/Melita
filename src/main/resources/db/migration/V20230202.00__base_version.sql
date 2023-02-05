@@ -1,8 +1,7 @@
 create table public.product
 (
     id          serial
-        constraint product_pk
-            primary key,
+        constraint product_pk primary key,
     name        varchar not null,
     description varchar
 );
@@ -12,12 +11,12 @@ alter table public.product
 
 create table public.package
 (
-    id          serial,
+    id          serial
+        constraint package_pk primary key,
     name        varchar not null,
-    product_id  serial
-        constraint package_fk
-            references public.product,
-    description varchar
+    description varchar,
+    product_id  int4
+        constraint package_fk references public.product (id)
 );
 
 alter table public.package

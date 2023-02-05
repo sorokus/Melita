@@ -1,6 +1,6 @@
 package com.melita.ordermanagement.model.dto;
 
-import java.util.Set;
+import java.util.List;
 
 import lombok.Data;
 
@@ -10,9 +10,9 @@ import lombok.Data;
 
 @Data
 public class ProductDto {
-    private Long            id;
-    private String          name;
-    private String          description;
-    private Set<PackageDto> packageDtos;
+    private Long             id;
+    private String           name;
+    private String           description;
+    private List<PackageDto> packages;
 }
 
