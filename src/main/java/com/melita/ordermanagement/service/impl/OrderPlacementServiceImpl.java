@@ -21,9 +21,9 @@ import java.util.List;
  */
 
 @Service
-public class OrderPlacementServiceimpl implements OrderPlacementService {
+public class OrderPlacementServiceImpl implements OrderPlacementService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(OrderPlacementServiceimpl.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(OrderPlacementServiceImpl.class);
 
     private ProductRepository productRepository;
     private RabbitTemplate rabbitTemplate;

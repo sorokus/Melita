@@ -22,9 +22,9 @@ import jakarta.persistence.PersistenceException;
  */
 
 @Service
-public class OrderApprovalServiceimpl implements OrderApprovalService {
+public class OrderApprovalServiceImpl implements OrderApprovalService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(OrderApprovalServiceimpl.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(OrderApprovalServiceImpl.class);
 
     private OrderConvertor         orderConvertor;
     private OrderProcessingService orderProcessingService;

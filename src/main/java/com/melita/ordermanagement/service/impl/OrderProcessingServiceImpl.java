@@ -35,9 +35,9 @@ import java.util.Set;
  */
 
 @Service
-public class OrderProcessingServiceimpl implements OrderProcessingService {
+public class OrderProcessingServiceImpl implements OrderProcessingService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(OrderProcessingServiceimpl.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(OrderProcessingServiceImpl.class);
 
     private final static String APPROVED_BY_SYSTEM = "system";
 
